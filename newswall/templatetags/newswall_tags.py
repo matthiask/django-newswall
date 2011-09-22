@@ -8,7 +8,7 @@ register = template.Library()
 
 @register.assignment_tag
 def newswall_sources():
-    return Source.objects.filter(is_active=True)
+    return Source.objects.active()
 
 
 @register.assignment_tag

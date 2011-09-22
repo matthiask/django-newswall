@@ -4,6 +4,11 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
+class SourceManager(models.Manager):
+    def active(self):
+        return self.filter(is_active=True)
+
+
 class Source(models.Model):
     is_active = models.BooleanField(_('is active'), default=True)
     name = models.CharField(_('name'), max_length=100)
@@ -17,6 +22,8 @@ class Source(models.Model):
         verbose_name = _('source')
         verbose_name_plural = _('sources')
 
+    objects = SourceManager()
+
     def __unicode__(self):
         return self.name
 
@@ -27,7 +34,7 @@ class Source(models.Model):
 
 class StoryManager(models.Manager):
     def active(self):
-        return self.filter(is_active=True, source__is_active=True)
+        return self.filter(is_active=True)
 
 
 class Story(models.Model):
