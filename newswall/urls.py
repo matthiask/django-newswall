@@ -1,10 +1,11 @@
 from django.conf.urls.defaults import url, patterns, include
 
+from newswall.feeds import StoryFeed
 from newswall import views
 
 
 urlpatterns = patterns('',
-    #url(r'^feed/$', StoryFeed()),
+    url(r'^feed/$', StoryFeed()),
     url(r'^$',
         views.ArchiveIndexView.as_view(),
         name='newswall_entry_archive'),
