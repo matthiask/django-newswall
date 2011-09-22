@@ -2,7 +2,11 @@
 
 {% load feincms_tags i18n %}
 
-{% block title %}{% trans "News" %} - {{ block.super }}{% endblock %}
+{% block title %}{% if year %}{{ year }} - {% endif %}
+{% if month %}{{ month|date:"F Y" }} - {% endif %}
+{% if day %}{{ day|date:"j. F Y" }} - {% endif %}
+{% if source %}{{ source }} - {% endif %}
+{% trans "News" %} - {{ block.super }}{% endblock %}
 
 {% block content %}
 {% block content_title %}
