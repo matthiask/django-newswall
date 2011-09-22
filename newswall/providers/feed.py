@@ -1,8 +1,17 @@
+from datetime import datetime
 import feedparser
+import time
 
 from newswall.providers.base import ProviderBase
 
 
 class Provider(ProviderBase):
     def update(self):
-        print 'Should update from feed %s' % self.config['source']
+        feed = feedparser.parse(self.config['source'])
+
+        for entry in feed['entries']:
+            self.create_story(entry.link,
+                title=entry.title,
+                body=entry.description,
+                timestamp=datetime.fromtimestamp(time.mktime(entry.date_parsed)),
+                )

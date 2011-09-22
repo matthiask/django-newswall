@@ -39,7 +39,7 @@ class Story(models.Model):
         verbose_name=_('source'))
 
     # story fields
-    title = models.CharField(_('title'), max_length=100)
+    title = models.CharField(_('title'), max_length=200)
     author = models.CharField(_('author'), max_length=100, blank=True)
     body = models.TextField(_('body'), blank=True,
         help_text=_('Content of the story. May contain HTML.'))
