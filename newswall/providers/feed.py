@@ -1,3 +1,14 @@
+"""
+RSS Feed Provider
+=================
+
+Required configuration keys::
+
+    {
+    "provider": "newswall.providers.feed",
+    "source": "http://twitter.com/statuses/user_timeline/feinheit.rss"
+    }
+"""
 from datetime import datetime
 import feedparser
 import time
