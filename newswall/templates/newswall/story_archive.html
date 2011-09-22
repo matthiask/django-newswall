@@ -22,7 +22,7 @@
             <a href="{{ category.source.get_absolute_url }}">{{ category.source }}</a> |
             {{ story.timestamp|date:"j F Y" }}
         </small>
-        {{ story.body|striptags|truncatewords:20 }}
+        <p>{{ story.body|striptags|truncatewords:20|safe|urlize }}</p>
     </article>
 {% endfor %}
 {% endblock %}
