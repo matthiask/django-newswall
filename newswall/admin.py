@@ -5,6 +5,7 @@ from newswall.models import Source, Story
 
 admin.site.register(Source,
     list_display=('name',),
+    prepopulated_fields={'slug': ('name',)},
     )
 
 admin.site.register(Story,
