@@ -1,0 +1,15 @@
+{% extends feincms_page.template.path|default:"base.html" %}
+
+{% load feincms_tags i18n %}
+
+{% block title %}{% trans "News" %} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<h1>{{ object }}</h1>
+<small>
+    <a href="{{ object.source.get_absolute_url }}">{{ object.source }}</a> |
+    {{ object.timestamp|date:"j F Y" }}
+</small>
+
+{{ story.body|striptags|truncatewords:20 }}
+{% endblock %}
