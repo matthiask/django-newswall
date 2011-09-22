@@ -30,7 +30,7 @@ class NewswallMixin(object):
         return super(NewswallMixin, self).get_context_data(**kwargs)
 
     def get_queryset(self):
-        return Story.objects.active() #.transform(entry_list_lookup_related)
+        return Story.objects.active().select_related('source') #.transform(entry_list_lookup_related)
 
     def render_to_response(self, context, **response_kwargs):
         if 'app_config' in getattr(self.request, '_feincms_extra_context', {}):
