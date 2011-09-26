@@ -15,5 +15,5 @@ admin.site.register(Story,
     list_display=('title', 'source', 'is_active', 'timestamp'),
     list_editable=('is_active',),
     list_filter=('source', 'is_active'),
-    search_fields=('object_url', 'title', 'author', 'content'),
+    search_fields=('object_url', 'title', 'author', 'body'),
     )
