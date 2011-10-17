@@ -1,3 +1,5 @@
+from datetime import date, timedelta
+
 from newswall.models import Story
 
 
@@ -12,6 +14,13 @@ class ProviderBase(object):
     def create_story(self, object_url, **kwargs):
         defaults = {'source': self.source}
         defaults.update(kwargs)
+
+        if defaults.get('title'):
+            if Story.objects.filter(
+                    title=defaults.get('title'),
+                    timestamp__gte=date.today() - timedelta(days=3),
+                    ).exists():
+                defaults['is_active'] = False
 
         return Story.objects.get_or_create(object_url=object_url,
             defaults=defaults)
