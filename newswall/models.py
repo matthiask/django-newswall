@@ -41,7 +41,7 @@ class Story(models.Model):
     # Mandatory data
     is_active = models.BooleanField(_('is active'), default=True)
     timestamp = models.DateTimeField(_('timestamp'), default=datetime.now)
-    object_url = models.URLField(_('object URL'), unique=True, verify_exists=False)
+    object_url = models.URLField(_('object URL'), unique=True)
     source = models.ForeignKey(Source, related_name='stories',
         verbose_name=_('source'))
 
