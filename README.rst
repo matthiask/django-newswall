@@ -54,10 +54,22 @@ follows::
     "access_token": "..."
     }
 
-Hvae a look at the following blog post to find out how to generate such an
-access token:
-<http://liquid9.tv/blog/2011/may/12/obtaining-permanent-facebook-oauth-access-token/>
+We suggest to use App Access Tokens to query the Facebook Page feed, because they don't expire.
+To get an App Access Token, simply open this URL with your browser, after
+filling in the required fields (the all caps words)::
 
+    https://graph.facebook.com/oauth/access_token?client_id=YOUR_APP_ID&client_secret=YOUR_APP_SECRET&grant_type=client_credentials
+
+More infos according the App Access Tokens can be found on the official Facebook documentation:
+<https://developers.facebook.com/docs/opengraph/using-app-tokens/>
+
+To obtain the "from_id" configuration parameter, you can query the Facebook Open Graph
+API Backend with your Browser::
+
+    https://graph.facebook.com/OBJECT
+
+f.e.:
+<https://graph.facebook.com/FEINHEIT>
 
 RSS Feed
 --------

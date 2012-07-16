@@ -17,30 +17,35 @@ Required configuration keys::
     }
 """
 
+import urllib
+
 from datetime import datetime
-import facebook
+
+from django.utils import simplejson
 
 from newswall.providers.base import ProviderBase
 
 
 class Provider(ProviderBase):
     def update(self):
-        graph = facebook.GraphAPI(self.config['access_token'])
-        response = graph.get_object(u'%s/feed/' % self.config['object'])
+        args = {'access_token' : self.config['access_token']}
+        query = "https://graph.facebook.com/%s/feed?%s" % (self.config['object'], urllib.urlencode(args))
+        file = urllib.urlopen(query)
+        raw = file.read()
+        response = simplejson.loads(raw)
 
-        from_id = self.config['from_id']
+        from_id = self.config.get('from_id', None)
 
         for entry in response['data']:
-            if entry['from']['id'] != from_id:
+            if from_id and entry['from']['id'] != from_id:
                 continue
 
             if 'to' in entry: # messages
                 continue
 
-            if 'actions' not in entry:
-                continue
+            link = 'https://facebook.com/%s' % entry['id'].replace('_', '/posts/')
 
-            self.create_story(entry['actions'][0]['link'], # comment or like
+            self.create_story(link,
                 title=entry.get('name') or entry.get('message') or entry.get('story', u''),
                 body=entry.get('message', u''),
                 image_url=entry.get('picture', u''),
