@@ -5,9 +5,9 @@ from newswall.models import Story
 
 
 class StoryFeed(Feed):
-    title = settings.BLOG_TITLE
+    title = getattr(settings, 'BLOG_TILE', 'Default Title')
     link = '/news/'
-    description = settings.BLOG_DESCRIPTION
+    description = getattr(settings, 'BLOG_DESCRIPTION', 'Default Description')
 
     def items(self):
         return Story.objects.active().order_by('-timestamp')[:20]
