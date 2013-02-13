@@ -83,14 +83,25 @@ by ``feedparser`` and turn the stories into news entries::
     }
 
 
-Twitter RSS Feed
+Twitter API Feed
 ----------------
 
-Specialized RSS feed provider which does not write anything into the story
-body but only fills the story title. Title and content are always the same in
-Twitter's RSS feed anyway::
+Required: tweepy
+
+Usage:
+
+Create a twitter app.
+You'll find the consumer_key/secret on the detail page.
+Because this is a read-only application, you can create
+your oauth_token/secret directly on the bottom of the app detail page.
+
+Required configuration keys::
 
     {
     "provider": "newswall.providers.twitter",
-    "user": "feinheit"
+    "user": "feinheit",
+    "consumer_key": "...",
+    "consumer_secret": "...",
+    "oauth_token": "...",
+    "oauth_secret": "..."
     }
