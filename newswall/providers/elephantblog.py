@@ -30,8 +30,9 @@ class Provider(ProviderBase):
             except:
                 body = u''
 
-            self.create_story(url,
+            self.create_story(
+                url,
                 title=entry.title,
                 timestamp=entry.published_on,
                 body=body,
-                )
+            )

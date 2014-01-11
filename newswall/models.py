@@ -17,12 +17,12 @@ class Source(models.Model):
 
     data = models.TextField(_('configuration data'), blank=True)
 
+    objects = SourceManager()
+
     class Meta:
         ordering = ['ordering', 'name']
         verbose_name = _('source')
         verbose_name_plural = _('sources')
-
-    objects = SourceManager()
 
     def __unicode__(self):
         return self.name
@@ -42,22 +42,23 @@ class Story(models.Model):
     is_active = models.BooleanField(_('is active'), default=True)
     timestamp = models.DateTimeField(_('timestamp'), default=datetime.now)
     object_url = models.URLField(_('object URL'), unique=True)
-    source = models.ForeignKey(Source, related_name='stories',
-        verbose_name=_('source'))
+    source = models.ForeignKey(
+        Source, related_name='stories', verbose_name=_('source'))
 
     # story fields
     title = models.CharField(_('title'), max_length=1000)
     author = models.CharField(_('author'), max_length=100, blank=True)
-    body = models.TextField(_('body'), blank=True,
+    body = models.TextField(
+        _('body'), blank=True,
         help_text=_('Content of the story. May contain HTML.'))
     image_url = models.CharField(_('image URL'), max_length=1000, blank=True)
+
+    objects = StoryManager()
 
     class Meta:
         ordering = ['-timestamp']
         verbose_name = _('story')
         verbose_name_plural = _('stories')
-
-    objects = StoryManager()
 
     def __unicode__(self):
         return self.title

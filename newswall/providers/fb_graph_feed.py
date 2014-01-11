@@ -5,7 +5,7 @@ Facebook Graph Feed API Provider
 This provider needs `offline_access` permission.
 
 See here how to get an access token with all permissions:
-http://liquid9.tv/blog/2011/may/12/obtaining-permanent-facebook-oauth-access-token/
+http://liquid9.tv/blog/2011/may/12/obtaining-permanent-facebook-oauth-access-token/  # noqa
 
 Required configuration keys::
 
@@ -28,8 +28,11 @@ from newswall.providers.base import ProviderBase
 
 class Provider(ProviderBase):
     def update(self):
-        args = {'access_token' : self.config['access_token']}
-        query = "https://graph.facebook.com/%s/feed?%s" % (self.config['object'], urllib.urlencode(args))
+        args = {'access_token': self.config['access_token']}
+        query = "https://graph.facebook.com/%s/feed?%s" % (
+            self.config['object'],
+            urllib.urlencode(args),
+        )
         file = urllib.urlopen(query)
         raw = file.read()
         response = simplejson.loads(raw)
@@ -40,14 +43,22 @@ class Provider(ProviderBase):
             if from_id and entry['from']['id'] != from_id:
                 continue
 
-            if 'to' in entry: # messages
+            if 'to' in entry:  # messages
                 continue
 
-            link = 'https://facebook.com/%s' % entry['id'].replace('_', '/posts/')
+            link = 'https://facebook.com/%s' % (
+                entry['id'].replace('_', '/posts/'),
+            )
 
-            self.create_story(link,
-                title=entry.get('name') or entry.get('message') or entry.get('story', u''),
+            self.create_story(
+                link,
+                title=(
+                    entry.get('name')
+                    or entry.get('message')
+                    or entry.get('story', u'')
+                ),
                 body=entry.get('message', u''),
                 image_url=entry.get('picture', u''),
-                timestamp=datetime.strptime(entry['created_time'], '%Y-%m-%dT%H:%M:%S+0000'),
-                )
+                timestamp=datetime.strptime(
+                    entry['created_time'], '%Y-%m-%dT%H:%M:%S+0000'),
+            )

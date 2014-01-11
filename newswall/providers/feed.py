@@ -22,14 +22,17 @@ class Provider(ProviderBase):
 
         for entry in feed['entries']:
             if hasattr(entry, 'date_parsed'):
-                timestamp = datetime.fromtimestamp(time.mktime(entry.date_parsed))
+                timestamp = datetime.fromtimestamp(
+                    time.mktime(entry.date_parsed))
             elif hasattr(entry, 'published_parsed'):
-                timestamp = datetime.fromtimestamp(time.mktime(entry.published_parsed))
+                timestamp = datetime.fromtimestamp(
+                    time.mktime(entry.published_parsed))
             else:
                 timestamp = datetime.now()
 
-            self.create_story(entry.link,
+            self.create_story(
+                entry.link,
                 title=entry.title,
                 body=entry.description,
                 timestamp=timestamp,
-                )
+            )

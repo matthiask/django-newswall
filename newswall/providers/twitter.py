@@ -38,11 +38,11 @@ from newswall.providers.base import ProviderBase
 
 class Provider(ProviderBase):
     def update(self):
-
         auth = tweepy.OAuthHandler(
             self.config['consumer_key'],
             self.config['consumer_secret']
         )
+
         auth.set_access_token(
             self.config['oauth_token'],
             self.config['oauth_secret']
@@ -52,9 +52,13 @@ class Provider(ProviderBase):
         entries = api.user_timeline(screen_name=self.config['user'])
 
         for entry in entries:
-            link = 'http://twitter.com/%s/status/%s' % (self.config['user'],
-                entry.id)
-            self.create_story(link,
+            link = 'http://twitter.com/%s/status/%s' % (
+                self.config['user'],
+                entry.id,
+            )
+
+            self.create_story(
+                link,
                 title=entry.text,
-                timestamp=entry.created_at
+                timestamp=entry.created_at,
             )

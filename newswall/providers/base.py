@@ -19,8 +19,10 @@ class ProviderBase(object):
             if Story.objects.filter(
                     title=defaults.get('title'),
                     timestamp__gte=date.today() - timedelta(days=3),
-                    ).exists():
+            ).exists():
                 defaults['is_active'] = False
 
-        return Story.objects.get_or_create(object_url=object_url,
-            defaults=defaults)
+        return Story.objects.get_or_create(
+            object_url=object_url,
+            defaults=defaults,
+        )
