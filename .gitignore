@@ -8,3 +8,4 @@
 /_build
 /build
 /dist
+django_newswall.egg-info
