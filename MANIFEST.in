@@ -1,0 +1,6 @@
+include LICENSE
+include MANIFEST.in
+include README.rst
+recursive-include newswall/static *
+recursive-include newswall/locale *
+recursive-include newswall/templates *
