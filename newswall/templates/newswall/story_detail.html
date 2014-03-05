@@ -1,6 +1,6 @@
-{% extends feincms_page.template.path|default:"base.html" %}
+{% extends view.base_template|default:"base.html" %}
 
-{% load feincms_tags i18n %}
+{% load i18n %}
 
 {% block title %}{% trans "News" %} - {{ block.super }}{% endblock %}
 
