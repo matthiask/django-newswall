@@ -21,7 +21,11 @@ import urllib
 
 from datetime import datetime
 
-from django.utils import simplejson
+try:
+    from django.utils import json
+except ImportError:
+    # maintain compatibility with Django < 1.7
+    from django.utils import simplejson as json
 
 from newswall.providers.base import ProviderBase
 
@@ -35,7 +39,7 @@ class Provider(ProviderBase):
         )
         file = urllib.urlopen(query)
         raw = file.read()
-        response = simplejson.loads(raw)
+        response = json.loads(raw)
 
         from_id = self.config.get('from_id', None)
 
