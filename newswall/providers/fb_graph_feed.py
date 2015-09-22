@@ -22,7 +22,7 @@ import urllib
 from datetime import datetime
 
 try:
-    from django.utils import json
+    import json
 except ImportError:
     # maintain compatibility with Django < 1.7
     from django.utils import simplejson as json
