@@ -1,4 +1,4 @@
-{% extends view.base_template|default:"base.html" %}
+{% extends view.base_template|default:"newswall/newswall_base.html" %}
 
 {% load i18n %}
 
@@ -8,25 +8,28 @@
 {% if source %}{{ source }} - {% endif %}
 {% trans "News" %} - {{ block.super }}{% endblock %}
 
-{% block content %}
+{% block news_content %}
 {% block content_title %}
-<h1>News
-    {% if year %}for {{ year }}{% endif %}
-    {% if month %}for {{ month|date:"F Y" }}{% endif %}
-    {% if day %}for {{ day|date:"j. F Y" }}{% endif %}
-    {% if category %}for {{ category }}{% endif %}
+<h1>{% trans 'News' %}
+    {% if year %}{% trans 'for' %} {{ year }}{% endif %}
+    {% if month %}{% trans 'for' %} {{ month|date:"F Y" }}{% endif %}
+    {% if day %}{% trans 'for' %} {{ day|date:"j. F Y" }}{% endif %}
+    {% if category %}{% trans 'for' %} {{ category }}{% endif %}
 </h1>
 {% endblock %}
 
 {% block object_list %}
 {% for story in object_list %}
     <article>
-        <h2><a href="{{ story.get_absolute_url }}">{{ story }}</a></h2>
+        {% if story.image_url %}
+            <img src="{{ story.image_url }}">
+        {% endif %}
+        <h2><a href="{{ story.get_absolute_url }}">{{ story.title }}</a></h2>
         <small>
-            <a href="{{ category.source.get_absolute_url }}">{{ category.source }}</a> |
+            <a href="{{ story.source.get_absolute_url }}">{{ story.source }}</a> |
             {{ story.timestamp|date:"j F Y" }}
         </small>
-        <p>{{ story.body|striptags|truncatewords:20|safe|urlize }}</p>
+        <p>{{ story.body|striptags|safe }}</p>
     </article>
 {% endfor %}
 {% endblock %}

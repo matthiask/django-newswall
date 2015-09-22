@@ -1,10 +1,10 @@
-{% extends view.base_template|default:"base.html" %}
+{% extends view.base_template|default:"newswall/newswall_base.html" %}
 
 {% load i18n %}
 
 {% block title %}{% trans "News" %} - {{ block.super }}{% endblock %}
 
-{% block content %}
+{% block news_content %}
 <h1>{{ object }}</h1>
 <small>
     <a href="{{ object.source.get_absolute_url }}">{{ object.source }}</a> |
