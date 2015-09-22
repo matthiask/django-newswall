@@ -17,9 +17,21 @@ Installation and usage
 
 4. Add news providers by create a few ``Source`` objects through Django's
    admin panel
-5. Create a cronjob running ``./manage.py update_newswall`` periodically (i.e.
+
+Updating newswall
+=================
+Method A: Create a cronjob running ``./manage.py update_newswall`` periodically (i.e.
    every hour)
 
+Method B: Use Celery:
+
+    CELERYBEAT_SCHEDULE = {
+            'update_newswall': {
+            'task': 'update_newswall',
+            'schedule': timedelta(seconds=3600),
+            'args': (),
+        },
+    }
 
 Providers
 =========
