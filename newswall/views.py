@@ -28,8 +28,8 @@ class NewswallMixin(object):
 
     @property
     def base_template(self):
-        if hastattr(request, '_feincms_page'):
-            return request._feincms_page.template.path
+        if hasattr(self.request, '_feincms_page'):
+            return self.request._feincms_page.template.path
         return 'base.html'
 
     def get_context_data(self, **kwargs):
