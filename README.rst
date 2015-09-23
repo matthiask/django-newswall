@@ -117,3 +117,23 @@ Required configuration keys::
     "oauth_token": "...",
     "oauth_secret": "..."
     }
+
+
+Youtube Provider
+================
+
+Get all video uploads for specific channel
+
+Create project at Google Developers Console
+(https://console.developers.google.com) and request an API key.
+
+Remember to enable ``YouTube Data API v3`` from APIs & Auth > APIs
+
+
+Required configuration keys::
+
+      {
+      "provider": "newswall.providers.youtube",
+      "channel_id": "...",
+      "api_key": "..."
+      }
