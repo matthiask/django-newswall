@@ -33,7 +33,8 @@ from newswall.providers.base import ProviderBase
 class Provider(ProviderBase):
     def update(self):
         args = {'access_token': self.config['access_token']}
-        query = "https://graph.facebook.com/%s/feed?%s" % (
+        query = "https://graph.facebook.com/v2.4/%s/feed?%s&fields=" \
+                "full_picture,picture,name,message,story,created_time,from" % (
             self.config['object'],
             urllib.urlencode(args),
         )
@@ -62,7 +63,7 @@ class Provider(ProviderBase):
                     or entry.get('story', u'')
                 ),
                 body=entry.get('message', u''),
-                image_url=entry.get('picture', u''),
+                image_url=entry.get('full_picture', u''),
                 timestamp=datetime.strptime(
                     entry['created_time'], '%Y-%m-%dT%H:%M:%S+0000'),
             )
