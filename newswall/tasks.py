@@ -11,4 +11,7 @@ logger = logging.getLogger(__name__)
 @shared_task(name='update_newswall')
 def update_newswall():
     logger.info('Newswall update started at {}'.format(datetime.now()))
-    call_command('update_newswall')
+    try:
+        call_command('update_newswall')
+    except Exception as e:
+        logger.exception(e)
