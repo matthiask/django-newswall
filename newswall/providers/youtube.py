@@ -58,8 +58,8 @@ class Provider(ProviderBase):
             self.create_story(
                 link,
                 title=snippet.get('title'),
-                body=video_url,
-                image_url=snippet['thumbnails']['default'].get('url'),
+                body=snippet['description'],
+                image_url=snippet['thumbnails']['maxres'].get('url'),
                 timestamp=datetime.strptime(
                     snippet['publishedAt'], '%Y-%m-%dT%H:%M:%S.000Z'
                 ),
