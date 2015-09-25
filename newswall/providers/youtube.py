@@ -29,7 +29,7 @@ except ImportError:
     # maintain compatibility with Django < 1.7
     from django.utils import simplejson as json
 
-from providers.base import ProviderBase
+from newswall.providers.base import ProviderBase
 
 
 class Provider(ProviderBase):
