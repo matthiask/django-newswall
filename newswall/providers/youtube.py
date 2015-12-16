@@ -55,11 +55,15 @@ class Provider(ProviderBase):
             video_id = snippet['resourceId']['videoId']
             video_url = 'https://www.youtube.com/watch?v=%s' % video_id
             link = video_url
+            try:
+                image_url = snippet['thumbnails']['maxres'].get('url')
+            except KeyError:
+                image_url = snippet['thumbnails']['high'].get('url')
             self.create_story(
                 link,
                 title=snippet.get('title'),
                 body=snippet['description'],
-                image_url=snippet['thumbnails']['maxres'].get('url'),
+                image_url=image_url,
                 timestamp=datetime.strptime(
                     snippet['publishedAt'], '%Y-%m-%dT%H:%M:%S.000Z'
                 ),
