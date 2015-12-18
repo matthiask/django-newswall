@@ -75,7 +75,7 @@ class Story(models.Model):
 
     def get_extra_data(self, key):
         try:
-            return ExtraData.objects.get(update=self, key=key)
+            return ExtraData.objects.get(story=self, key=key)
         except ObjectDoesNotExist():
             return None
 
