@@ -137,3 +137,14 @@ Required configuration keys::
       "channel_id": "...",
       "api_key": "..."
       }
+
+
+
+Instagram Provider
+==================
+
+Required configuration keys::
+    {
+    "provider": "newswall.providers.instagram",
+    "username": "...",
+    }
