@@ -1,69 +1,49 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.db import migrations, models
 import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        
-        # Adding model 'Source'
-        db.create_table('newswall_source', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('is_active', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('slug', self.gf('django.db.models.fields.SlugField')(unique=True, max_length=50)),
-            ('ordering', self.gf('django.db.models.fields.IntegerField')(default=0)),
-            ('data', self.gf('django.db.models.fields.TextField')(blank=True)),
-        ))
-        db.send_create_signal('newswall', ['Source'])
+    dependencies = [
+    ]
 
-        # Adding model 'Story'
-        db.create_table('newswall_story', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('is_active', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('timestamp', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
-            ('object_url', self.gf('django.db.models.fields.URLField')(unique=True, max_length=200)),
-            ('source', self.gf('django.db.models.fields.related.ForeignKey')(related_name='stories', to=orm['newswall.Source'])),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('author', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
-            ('body', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('image_url', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
-        ))
-        db.send_create_signal('newswall', ['Story'])
-
-    def backwards(self, orm):
-        
-        # Deleting model 'Source'
-        db.delete_table('newswall_source')
-
-        # Deleting model 'Story'
-        db.delete_table('newswall_story')
-
-    models = {
-        'newswall.source': {
-            'Meta': {'ordering': "['ordering', 'name']", 'object_name': 'Source'},
-            'data': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'ordering': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '50'})
-        },
-        'newswall.story': {
-            'Meta': {'ordering': "['-timestamp']", 'object_name': 'Story'},
-            'author': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'body': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'image_url': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
-            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'object_url': ('django.db.models.fields.URLField', [], {'unique': 'True', 'max_length': '200'}),
-            'source': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'stories'", 'to': "orm['newswall.Source']"}),
-            'timestamp': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '100'})
-        }
-    }
-
-    complete_apps = ['newswall']
+    operations = [
+        migrations.CreateModel(
+            name='Source',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('is_active', models.BooleanField(default=True, verbose_name='is active')),
+                ('name', models.CharField(max_length=100, verbose_name='name')),
+                ('slug', models.SlugField(unique=True, verbose_name='slug')),
+                ('ordering', models.IntegerField(default=0, verbose_name='ordering')),
+                ('data', models.TextField(verbose_name='configuration data', blank=True)),
+            ],
+            options={
+                'ordering': ['ordering', 'name'],
+                'verbose_name': 'source',
+                'verbose_name_plural': 'sources',
+            },
+        ),
+        migrations.CreateModel(
+            name='Story',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('is_active', models.BooleanField(default=True, verbose_name='is active')),
+                ('timestamp', models.DateTimeField(default=datetime.datetime.now, verbose_name='timestamp')),
+                ('object_url', models.URLField(unique=True, verbose_name='object URL')),
+                ('title', models.CharField(max_length=1000, verbose_name='title')),
+                ('author', models.CharField(max_length=100, verbose_name='author', blank=True)),
+                ('body', models.TextField(help_text='Content of the story. May contain HTML.', verbose_name='body', blank=True)),
+                ('image_url', models.CharField(max_length=1000, verbose_name='image URL', blank=True)),
+                ('source', models.ForeignKey(related_name='stories', verbose_name='source', to='newswall.Source')),
+            ],
+            options={
+                'ordering': ['-timestamp'],
+                'verbose_name': 'story',
+                'verbose_name_plural': 'stories',
+            },
+        ),
+    ]

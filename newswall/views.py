@@ -1,7 +1,10 @@
+from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404
-from django.views.generic import dates
+from django.views.generic import dates, View
+from django.forms.models import model_to_dict
 
-from newswall.models import Source, Story
+from .models import Source, Story
+from .mixin import NewswallMixin, JSONResponseMixin
 
 try:
     from towel import paginator
@@ -12,39 +15,6 @@ except ImportError:
 __all__ = (
     'ArchiveIndexView', 'YearArchiveView', 'MonthArchiveView',
     'DayArchiveView', 'DateDetailView', 'SourceArchiveIndexView')
-
-
-class NewswallMixin(object):
-    """
-    This mixin autodetects whether the blog is integrated through a FeinCMS
-    ApplicationContent and automatically switches to inheritance2.0 if that's
-    the case. Please note that FeinCMS is NOT required, this is purely for the
-    convenience of FeinCMS users. The functionality for this is contained
-    inside ``base_template`` and ``render_to_response``.
-
-    Additionally, it adds the view instance to the template context
-    as ``view``.
-    """
-
-    @property
-    def base_template(self):
-        if hastattr(request, '_feincms_page'):
-            return request._feincms_page.template.path
-        return 'base.html'
-
-    def get_context_data(self, **kwargs):
-        kwargs.update({'view': self})
-        return super(NewswallMixin, self).get_context_data(**kwargs)
-
-    def get_queryset(self):
-        return Story.objects.active().select_related('source')
-
-    def render_to_response(self, context, **response_kwargs):
-        if 'app_config' in getattr(self.request, '_feincms_extra_context', {}):
-            return self.get_template_names(), context
-
-        return super(NewswallMixin, self).render_to_response(
-            context, **response_kwargs)
 
 
 class ArchiveIndexView(NewswallMixin, dates.ArchiveIndexView):
@@ -102,3 +72,25 @@ class SourceArchiveIndexView(ArchiveIndexView):
         return super(SourceArchiveIndexView, self).get_context_data(
             source=self.source,
             **kwargs)
+
+
+class FeedDataView(JSONResponseMixin, View):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.is_ajax():
+            return HttpResponseForbidden()
+        return super(FeedDataView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        data = Story.objects.active()
+        clean_data = []
+        for item in data:
+            clean_item = model_to_dict(item)
+            clean_data.append(clean_item)
+
+        context = {
+            'stories': clean_data,
+        }
+        return context
+
+    def get(self, request, *args, **kwargs):
+        return self.render_to_response(self.get_context_data())

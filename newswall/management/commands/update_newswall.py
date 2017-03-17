@@ -5,7 +5,7 @@ try:
     import json
 except ImportError:
     # maintain compatibility with Django < 1.7
-    from djanto.utils import simplejson as json
+    from django.utils import simplejson as json
 
 from newswall.models import Source
 

@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.db import models
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -29,7 +30,7 @@ class Source(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('newswall_source_detail', (), {'slug': self.slug})
+        return 'newswall_source_detail', (), {'slug': self.slug}
 
 
 class StoryManager(models.Manager):
@@ -65,3 +66,24 @@ class Story(models.Model):
 
     def get_absolute_url(self):
         return self.object_url
+
+    def update_extra_data(self, key, value):
+        extra_data, created = ExtraData.objects.get_or_create(story=self,
+                                                              key=key)
+        extra_data.value = value
+        extra_data.save()
+
+    def get_extra_data(self, key):
+        try:
+            return ExtraData.objects.get(story=self, key=key)
+        except ObjectDoesNotExist():
+            return None
+
+
+class ExtraData(models.Model):
+    class Meta:
+        unique_together = ['story', 'key']
+
+    story = models.ForeignKey(Story)
+    key = models.CharField(max_length=128)
+    value = models.TextField(null=True, blank=True)

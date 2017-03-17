@@ -7,6 +7,9 @@ from newswall import views
 urlpatterns = patterns(
     '',
     url(r'^feed/$', StoryFeed()),
+    url(r'^get/$',
+        views.FeedDataView.as_view(),
+        name='newswall_feed_data'),
     url(r'^$',
         views.ArchiveIndexView.as_view(),
         name='newswall_entry_archive'),

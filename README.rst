@@ -17,9 +17,21 @@ Installation and usage
 
 4. Add news providers by create a few ``Source`` objects through Django's
    admin panel
-5. Create a cronjob running ``./manage.py update_newswall`` periodically (i.e.
+
+Updating newswall
+=================
+Method A: Create a cronjob running ``./manage.py update_newswall`` periodically (i.e.
    every hour)
 
+Method B: Use Celery:
+
+    CELERYBEAT_SCHEDULE = {
+            'update_newswall': {
+            'task': 'update_newswall',
+            'schedule': timedelta(seconds=3600),
+            'args': (),
+        },
+    }
 
 Providers
 =========
@@ -104,4 +116,35 @@ Required configuration keys::
     "consumer_secret": "...",
     "oauth_token": "...",
     "oauth_secret": "..."
+    }
+
+
+Youtube Provider
+================
+
+Get all video uploads for specific channel
+
+Create project at Google Developers Console
+(https://console.developers.google.com) and request an API key.
+
+Remember to enable ``YouTube Data API v3`` from APIs & Auth > APIs
+
+
+Required configuration keys::
+
+      {
+      "provider": "newswall.providers.youtube",
+      "channel_id": "...",
+      "api_key": "..."
+      }
+
+
+
+Instagram Provider
+==================
+
+Required configuration keys::
+    {
+    "provider": "newswall.providers.instagram",
+    "username": "...",
     }

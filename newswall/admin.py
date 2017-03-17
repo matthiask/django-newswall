@@ -1,6 +1,14 @@
 from django.contrib import admin
+from django.db.models import TextField
+from django.forms import TextInput
+from newswall.models import Source, Story, ExtraData
 
-from newswall.models import Source, Story
+
+class ExtraDataInline(admin.TabularInline):
+    model = ExtraData
+    formfield_overrides = {
+        TextField: {'widget': TextInput},
+    }
 
 
 admin.site.register(
@@ -18,4 +26,5 @@ admin.site.register(
     list_editable=('is_active',),
     list_filter=('source', 'is_active'),
     search_fields=('object_url', 'title', 'author', 'body'),
+    inlines=(ExtraDataInline,)
 )
